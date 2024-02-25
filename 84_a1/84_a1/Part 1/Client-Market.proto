@@ -1,0 +1,121 @@
+
+syntax = "proto3";
+
+
+service BuyerInteracts {
+
+    rpc SearchItem (ItemSearch) returns (Items) {}
+
+    rpc BuyItem (ItemBuy) returns (RequestStatus) {}
+
+    rpc AddToWishList (WishList) returns (RequestStatus) {}
+
+    rpc RateItem (Rating) returns (RequestStatus) {}
+
+}
+
+service SellerInteracts {
+
+    rpc RegisterSeller (SellerCredential) returns (RequestStatus) {} 
+
+    rpc SellItem (ItemRegistration) returns (RequestStatus) {}
+
+    rpc UpdateItem (Item) returns (RequestStatus) {}
+
+    rpc DeleteItem (DelItem) returns (RequestStatus) {}
+
+    rpc DisplaySellerItems (SellerCredential) returns (Items) {}
+
+}
+
+service MarketInteracts{
+    
+    rpc NotifyClient (ItemReceived) returns (RequestStatus) {}
+
+}
+
+enum Category {
+    Others = 0;
+    Electronics = 1;
+    Fashion = 2;
+    Any = 3;
+}
+
+message BuyerCredential {
+    string ipAddr = 1;
+    int32 port = 2;
+}
+
+message SellerCredential {
+    string ipAddr = 1;
+    int32 port = 2;
+    string uuid = 3;
+}
+
+message SellerDetails {
+    string ipAddr = 1;
+    int32 port = 2;
+}
+
+message ItemRegistration {
+    SellerCredential seller = 1;
+    string name = 2;
+    Category category = 3;
+    int32 quantity = 4;
+    string description = 5;
+    float price = 6;
+}
+
+message Item {
+    SellerCredential seller = 1;
+    int32 id = 2;
+    int32 newQuantity = 3;
+    float newPrice = 4;
+}
+
+message DelItem {
+    SellerCredential seller = 1;
+    int32 id = 2;
+}
+
+message ItemSearch {
+    BuyerCredential buyer = 1;
+    string name = 2;
+    Category category = 3;
+}
+
+message ItemBuy {
+    BuyerCredential buyer = 1;
+    int32 id = 2;
+    int32 quantity = 3;
+}
+
+message WishList {
+    BuyerCredential buyer = 1;
+    int32 id = 2;
+}
+
+message Rating {
+    BuyerCredential buyer = 1;
+    int32 id = 2;
+    float rating = 3;
+}
+
+message ItemReceived {
+    int32 id = 1;
+    float price = 2;
+    string name = 3;
+    Category category = 4;
+    string description = 5;
+    int32 quantity = 6;
+    SellerDetails seller = 7;
+    float rating = 8;
+}
+
+message Items {
+    repeated ItemReceived items = 1;
+}
+
+message RequestStatus {
+    string status = 1;
+}
