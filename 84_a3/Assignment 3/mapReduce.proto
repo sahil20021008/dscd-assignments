@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+
+service MasterAndMapper{
+
+    rpc mapRequest (mapData) returns (status) {}
+
+}
+
+service MasterAndReducer{
+
+    rpc reduceRequest (reduceData) returns (ReduceResp) {}
+
+}
+
+service MapperAndReducer{
+
+    rpc getPairs (Identity) returns (Pairs) {}
+
+}
+
+message Point{
+    double x = 1;
+    double y = 2;
+}
+
+message status{
+    string state = 1;
+}
+
+message Identity{
+    int32 reducer_id = 1;
+    int32 mapper_id = 2;
+}
+
+message mapData{
+    int32 startIdx = 1;
+    int32 endIdx = 2;
+    int32 iter_num = 3;
+    int32 reducers = 4;
+    int32 mapper_id = 5;
+    repeated Point centroids = 6;
+}
+
+message reduceData{
+    int32 iter_num = 1;
+    int32 my_reducer_id = 2;
+    int32 work_reducer_id = 3;
+    int32 mappers = 4;
+}
+
+message Pair{
+    float centroid_id = 1;
+    Point point = 2;
+}
+
+message Pairs{
+    repeated Pair pairs = 1;
+}
+
+message ReduceResp{
+    repeated Pair pairs = 1;
+    string state = 2;
+}

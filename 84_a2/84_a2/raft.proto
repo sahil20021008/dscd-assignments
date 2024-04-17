@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+service CandidateInteracts{
+
+    rpc VoteRequest (Details) returns (VoteResponse) {}
+
+}
+
+service ClientInteracts{
+
+    rpc SetPair (Pair) returns (ServerResponse) {}
+
+    rpc GetPair (getKey) returns (ServerResponse) {}
+
+}
+
+service LeaderInteracts{
+
+    rpc LogRequest (LeaderDetails) returns (LogResponse) {}
+
+}
+
+message Details{
+    int32 node_id = 1;
+    int32 current_term = 2;
+    int32 log_length = 3;
+    int32 last_term = 4;
+}
+
+message VoteResponse{
+    int32 node_id = 1;
+    int32 term = 2;
+    string granted = 3;
+    float leaseTime = 4;
+}
+
+message getKey{
+    string key = 1;
+}
+
+message Pair{
+    string key = 1;
+    string value = 2;
+}
+
+message LogEntry{
+    string key = 1;
+    string value = 2;
+    int32 term = 3;
+}
+
+message ServerResponse{
+    string data = 1;
+    int32 leaderID = 2;
+    string status = 3;
+}
+
+message LeaderDetails{
+    int32 leaderID = 1;
+    int32 term = 2;
+    int32 prefixLen = 3;
+    int32 prefixTerm = 4;
+    int32 leaderCommit = 5;
+    repeated LogEntry suffix = 6;
+    string no_op = 7;
+    double leaseTime = 8;
+}
+
+message LogResponse{
+    int32 node_id = 1;
+    int32 term = 2;
+    int32 ack = 3;
+    string status = 4;
+}
